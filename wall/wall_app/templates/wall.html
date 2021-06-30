@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Wall</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+</head>
+
+<body>
+    <div id="wrapper">
+        <div id="nav">
+            <h3>CodingDojo Wall</h3>
+            <div id="navbar">
+                <h4>Welcome {{ request.session.first_name }} </h4>
+                <a href="/logout">Log off</a>
+            </div>
+        </div>
+        <hr>
+        <div id="main">
+            <h3>Post a message</h3><br>
+            <form action="/createpost" method="post">
+                {% csrf_token %}
+                <textarea id="post" name="addmessage" rows="5" cols="120">
+                Add a message
+            </textarea><br>
+                <input type="submit" id="done" value="Post a message">
+            </form>
+            <div class="messages">
+                {% for message in messages %}
+                    <p>{{ message.user.first_name }} {{ message.user.last_name }} - {{ message.created_at }}
+                </p>
+                <p class="toright">{{ message.message }}</p>
+                <div class="comment">
+                    {% for comment in message.comments.all %}
+                    <p>{{ comment.user.first_name }} {{ comment.user.last_name }} -
+                        {{ comment.created_at }}</p>
+                    <p>{{ comment.comment }}</p>
+                    {% endfor %}
+                </div>
+                <form action="/createcomment" method="post">
+                    <input type="hidden" name="message_id" value="{{ message.id }}">
+                    <input type="hidden" name="user_id" value="{{ user.id }}">
+                    {% csrf_token %}
+                    <textarea class="comment_box" name="addcomment" rows="5" cols="110">
+                Add a comment
+                </textarea><br>
+                    <input type="submit" id="done" value="Post a comment">
+                </form>
+                {% endfor %}
+            </div>
+            <br>
+        </div>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Wall</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+</head>
+<body>
+    <div id="wrapper">
+        <div id="nav">
+            <h3>CodingDojo Wall</h3>
+            <div id="navbar">
+                <h4>Welcome</h4>
+                <a href="/logout">Log off</a>
+            </div>
+        </div>
+        <hr>
+        <div id="main">
+            <div class="messages">
+                {% for message in messages %}
+                <p><p>{{ message.user.first_name }} {{ message.user.last_name }} - {{ message.created_at }}</p>
+                <p class="toright">{{ message.message }}</p>
+                {% endfor %}
+            </div>
+            <form action="login" method="post">
+                {% csrf_token %}
+                <h3>Post a message</h3><br>
+                <textarea id="post" name="message" rows="5" cols="120">
+                Add a message
+            </textarea><br>
+                <input type="submit" id="done" value="Post a message">
+                <div class="messages">
+            </form>
+        </div>
+    </div>
+    </div>
+</body>
+
+</html>
